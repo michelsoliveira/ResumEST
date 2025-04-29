@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, UTC
 import jwt
-from domain.models.user import User, UserRole
-from domain.repositories.user_repository import UserRepository
+from ...domain.models.user import User, UserRole
+from ...domain.repositories.user_repository import UserRepository
 
 class AuthService:
     def __init__(self, user_repository: UserRepository, secret_key: str):
@@ -16,9 +16,10 @@ class AuthService:
         user = User(
             id=None,
             email=email,
-            role=role,
             created_at=now,
-            updated_at=now
+            updated_at=now,
+            password_hash="",
+            role=role
         )
         return self.user_repository.save(user)
 

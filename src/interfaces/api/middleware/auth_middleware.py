@@ -1,6 +1,6 @@
 import jwt
 from falcon import Request, Response, HTTPUnauthorized, HTTPForbidden
-from ..domain.models.user import UserRole
+from ....domain.models.user import UserRole
 
 class AuthMiddleware:
     def __init__(self, secret_key: str):

@@ -11,7 +11,7 @@ class UserRole(str, Enum):
 class User:
     id: Optional[str]
     email: str
-    password_hash: Optional[str] = ""
-    role: UserRole = UserRole.GUEST
     created_at: datetime
-    updated_at: datetime 
+    updated_at: datetime
+    password_hash: Optional[str] = ""
+    role: UserRole = UserRole.GUEST 

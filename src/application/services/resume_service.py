@@ -1,7 +1,7 @@
 from typing import List, Optional
 from datetime import datetime, UTC
-from ..domain.models.resume import Resume
-from ..domain.repositories.resume_repository import ResumeRepository
+from ...domain.models.resume import Resume
+from ...domain.repositories.resume_repository import ResumeRepository
 
 class ResumeService:
     def __init__(self, resume_repository: ResumeRepository):

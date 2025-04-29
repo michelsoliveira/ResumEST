@@ -94,15 +94,46 @@ class MongoDBResumeRepository(ResumeRepository):
 
     def _dict_to_resume(self, resume_dict: dict, education_records: List[dict], 
                        experience_records: List[dict], skill_records: List[dict]) -> Resume:
+        # Transform MongoDB records to domain models by mapping _id to id
+        education_list = []
+        for edu in education_records:
+            edu_copy = edu.copy()
+            if "_id" in edu_copy:
+                edu_copy["id"] = str(edu_copy.pop("_id"))
+            # Remove resume_id as it's not part of the Education model
+            if "resume_id" in edu_copy:
+                edu_copy.pop("resume_id")
+            education_list.append(Education(**edu_copy))
+            
+        experience_list = []
+        for exp in experience_records:
+            exp_copy = exp.copy()
+            if "_id" in exp_copy:
+                exp_copy["id"] = str(exp_copy.pop("_id"))
+            # Remove resume_id as it's not part of the Experience model
+            if "resume_id" in exp_copy:
+                exp_copy.pop("resume_id")
+            experience_list.append(Experience(**exp_copy))
+            
+        skill_list = []
+        for skill in skill_records:
+            skill_copy = skill.copy()
+            if "_id" in skill_copy:
+                skill_copy["id"] = str(skill_copy.pop("_id"))
+            # Remove resume_id as it's not part of the Skill model
+            if "resume_id" in skill_copy:
+                skill_copy.pop("resume_id")
+            skill_list.append(Skill(**skill_copy))
+        
         return Resume(
             id=str(resume_dict["_id"]),
             user_id=resume_dict["user_id"],
             title=resume_dict["title"],
             contact=Contact(**resume_dict["contact"]),
             summary=resume_dict["summary"],
-            education=[Education(**edu) for edu in education_records],
-            experience=[Experience(**exp) for exp in experience_records],
-            skills=[Skill(**skill) for skill in skill_records],
+            education=education_list,
+            experience=experience_list,
+            skills=skill_list,
             created_at=resume_dict["created_at"],
             updated_at=resume_dict["updated_at"]
         ) 
